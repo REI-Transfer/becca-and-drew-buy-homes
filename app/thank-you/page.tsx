@@ -76,22 +76,6 @@ function ThankYouV2() {
         </header>
       )}
 
-      {/* Thank-you video gallery (flat 8-chapter series). ADDITIVE: first section
-          below the header, above the hero. All other V2 sections are unchanged. */}
-      <section className="bg-[#FAFAF9] pt-10 md:pt-12">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="mb-6 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-balance">
-              Watch: Get to Know Us
-            </h2>
-            <p className="mx-auto mt-2 max-w-2xl text-gray-600">
-              A quick video series on who we are, how we work, and what to expect next.
-            </p>
-          </div>
-          <VideoGallery accentColor={config.accentColor} />
-        </div>
-      </section>
-
       <section className="bg-white">
         <div className="mx-auto max-w-3xl px-4 pt-12 pb-8 text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gray-900">
@@ -369,7 +353,24 @@ function ThankYouV1() {
             <strong>24 hours</strong> with your cash offer. In the meantime, here are answers to common questions.
           </p>
         </div>
+      </div>
 
+      {/* Thank-you video gallery (flat 8-chapter series). Inserted between the header
+          and the Personal Note. Full-width section -- the surrounding max-w-2xl column
+          is split so the player + chapter sidebar have room. */}
+      <section className="mx-auto max-w-7xl px-4 pb-12">
+        <div className="mb-6 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-balance">
+            Watch: Get to Know Us
+          </h2>
+          <p className="mx-auto mt-2 max-w-2xl text-gray-600">
+            A quick video series on who we are, how we work, and what to expect next.
+          </p>
+        </div>
+        <VideoGallery accentColor={config.accentColor} />
+      </section>
+
+      <div className="mx-auto max-w-2xl px-4 py-12 md:py-20">
         {/* Video section */}
         {process.env.NEXT_PUBLIC_THANKYOU_VIDEO_URL && (
           <div className="mb-8">
