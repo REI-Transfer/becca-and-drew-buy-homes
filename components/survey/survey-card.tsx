@@ -550,7 +550,7 @@ export function SurveyCard({ phoneDisplay = "(800) 000-0000", phoneHref = "80000
         {step === 5 && (
           <div className="flex flex-col gap-4">
             <div>
-              <h2 className="text-2xl font-semibold text-gray-900">How fast are you looking to sell?</h2>
+              <h2 className="text-2xl font-semibold text-gray-900">How soon are you looking to sell?</h2>
               <p className="mt-1 text-sm text-gray-500">Select your ideal timeline for closing.</p>
             </div>
             <div className="flex flex-col gap-2">

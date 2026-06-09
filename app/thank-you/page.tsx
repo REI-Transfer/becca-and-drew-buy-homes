@@ -488,7 +488,7 @@ function ThankYouV1() {
           phoneDisplay={config.phoneDisplay}
           phoneHref={config.phoneHref}
           smsKeyword={config.smsKeyword}
-          heading="Want your offer faster? Reach us now."
+          heading="Want your offer sooner? Reach us now."
           subheading="Tap to text us the word OFFER, or call and a local team member will pick up."
         />
 
