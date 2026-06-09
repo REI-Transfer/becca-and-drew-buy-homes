@@ -3,6 +3,7 @@ import Link from "next/link"
 import { CheckCircle2, Phone, MessageSquare } from "lucide-react"
 import config from "@/lib/config"
 import { ClickToPlayVideo } from "@/components/thankyou/click-to-play-video"
+import { VideoGallery } from "@/components/thank-you/video-gallery"
 import { ContactCTA } from "@/components/article/contact-cta"
 import { ARTICLES } from "@/lib/articles"
 import { isYouTubeUrl, toYouTubeEmbed } from "@/lib/youtube"
@@ -74,6 +75,22 @@ function ThankYouV2() {
           </div>
         </header>
       )}
+
+      {/* Thank-you video gallery (flat 8-chapter series). ADDITIVE: first section
+          below the header, above the hero. All other V2 sections are unchanged. */}
+      <section className="bg-[#FAFAF9] pt-10 md:pt-12">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 text-balance">
+              Watch: Get to Know Us
+            </h2>
+            <p className="mx-auto mt-2 max-w-2xl text-gray-600">
+              A quick video series on who we are, how we work, and what to expect next.
+            </p>
+          </div>
+          <VideoGallery accentColor={config.accentColor} />
+        </div>
+      </section>
 
       <section className="bg-white">
         <div className="mx-auto max-w-3xl px-4 pt-12 pb-8 text-center">
