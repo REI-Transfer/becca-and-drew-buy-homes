@@ -313,7 +313,7 @@ export function ZeroDistractionForm({ accentColor, serviceAreas, disqualifiedPro
         window.fbq("track", "Lead", {
           value: score.meta_value,
           currency: "USD",
-          qualified: true,
+          qualified,
           lead_score: score.lead_score,
           lead_quality: score.lead_quality,
           content_name: "Cash Offer Request",
@@ -350,6 +350,8 @@ export function ZeroDistractionForm({ accentColor, serviceAreas, disqualifiedPro
         lead_score_breakdown: score.breakdown,
 
         event_id: eventID,
+        meta_event_id: eventID,
+        meta_event_name: qualified ? "Lead" : "LeadLowIntent",
         qualified,
 
         utm_source:   tracking.utm_source   ?? "",
