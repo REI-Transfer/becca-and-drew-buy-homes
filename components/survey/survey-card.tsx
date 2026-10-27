@@ -61,7 +61,6 @@ const CONDITION_OPTIONS = [
 ]
 
 const REASON_OPTIONS = [
-  { id: "foreclosure", label: "Facing foreclosure" },
   { id: "behind-payments", label: "Behind on payments" },
   { id: "inherited", label: "Inherited property" },
   { id: "divorce", label: "Divorce or separation" },
