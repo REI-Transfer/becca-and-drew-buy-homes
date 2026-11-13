@@ -186,6 +186,30 @@
     "description": "JSON array of service area circles: [{id, centerLat, centerLng, radiusMiles}]. Passed to address autocomplete for location bias."
   },
   {
+    "name": "NEXT_PUBLIC_ALLOWED_COUNTIES",
+    "type": "string",
+    "required": false,
+    "scope": "client",
+    "default": "",
+    "description": "Comma list of \"ST:County Name\" (Google administrative_area_level_2 long_name, e.g. MD:Howard County). An address in a listed county passes even outside SERVICE_AREAS circles. Build-time."
+  },
+  {
+    "name": "NEXT_PUBLIC_EXCLUDED_STATES",
+    "type": "string",
+    "required": false,
+    "scope": "client",
+    "default": "",
+    "description": "Comma list of state codes (e.g. OH,OK,PA) always rejected, even inside a circle or county. Build-time."
+  },
+  {
+    "name": "NEXT_PUBLIC_EXCLUDED_LOCALITIES",
+    "type": "string",
+    "required": false,
+    "scope": "client",
+    "default": "",
+    "description": "Comma list of \"ST:City\" (Google locality, e.g. IL:Chicago) always rejected. Build-time."
+  },
+  {
     "name": "NEXT_PUBLIC_SERVICE_AREAS",
     "type": "json",
     "required": false,
