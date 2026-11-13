@@ -40,6 +40,7 @@ import {
   Eye,
 } from "lucide-react"
 import { AddressAutocomplete, type AddressDetails, type ServiceArea } from "@/components/survey/address-autocomplete"
+import { isAddressAllowed } from "@/lib/service-area"
 import { readCapturedTracking } from "@/components/tracking/tracking-capture"
 import { readGfSid } from "@/lib/tracking"
 import { scoreLead } from "@/lib/lead-scoring"
@@ -266,20 +267,7 @@ export function ZeroDistractionForm({ accentColor, serviceAreas, disqualifiedPro
 
   const isPropertyDisqualified = (typeId: string) => disqualifiedPropertyTypes.includes(typeId)
 
-  const isInServiceArea = (details: AddressDetails): boolean => {
-    if (serviceAreas.length === 0) return true
-    if (!details.lat || !details.lng) return true
-    return serviceAreas.some(area => {
-      const dLat = (details.lat! - area.centerLat) * Math.PI / 180
-      const dLng = (details.lng! - area.centerLng) * Math.PI / 180
-      const a = Math.sin(dLat / 2) ** 2 +
-        Math.cos(area.centerLat * Math.PI / 180) *
-        Math.cos(details.lat! * Math.PI / 180) *
-        Math.sin(dLng / 2) ** 2
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-      return 3959 * c <= area.radiusMiles
-    })
-  }
+  const isInServiceArea = (details: AddressDetails): boolean => isAddressAllowed(details, serviceAreas)
 
   const submit = async () => {
     setSubmitting(true)

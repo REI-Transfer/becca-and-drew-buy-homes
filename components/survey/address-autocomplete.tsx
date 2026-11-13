@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { MapPin } from "lucide-react"
+import { isAddressAllowed, type ServiceArea } from "@/lib/service-area"
+
+export type { ServiceArea }
 
 export interface AddressDetails {
   formattedAddress: string
@@ -11,13 +14,6 @@ export interface AddressDetails {
   state?: string
   city?: string
   county?: string
-}
-
-export interface ServiceArea {
-  id: string
-  centerLat: number
-  centerLng: number
-  radiusMiles: number
 }
 
 interface AddressAutocompleteProps {
@@ -34,23 +30,6 @@ declare global {
     google: typeof google
     initGooglePlaces: () => void
   }
-}
-
-function haversineDistanceMiles(lat1: number, lon1: number, lat2: number, lon2: number): number {
-  const R = 3958.8
-  const dLat = (lat2 - lat1) * Math.PI / 180
-  const dLon = (lon2 - lon1) * Math.PI / 180
-  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-}
-
-function isInServiceArea(lat: number, lng: number, areas: ServiceArea[]): boolean {
-  if (!areas || areas.length === 0) return true // no restriction if no areas configured
-  // Defensive: ignore malformed entries (e.g. ["StateName"] from the onboarding tool)
-  // that have no numeric center, so a bad SERVICE_AREAS value never blocks selection.
-  const valid = areas.filter(a => typeof a?.centerLat === "number" && typeof a?.centerLng === "number" && typeof a?.radiusMiles === "number")
-  if (valid.length === 0) return true
-  return valid.some(area => haversineDistanceMiles(lat, lng, area.centerLat, area.centerLng) <= area.radiusMiles)
 }
 
 // Singleton loader: the Google Maps script must load EXACTLY ONCE per page.
@@ -164,13 +143,11 @@ export function AddressAutocomplete({
 
       const details: AddressDetails = { formattedAddress: place.formatted_address, lat, lng, state, city, county }
 
-      // Service area validation
-      if (serviceAreas.length > 0 && lat !== undefined && lng !== undefined) {
-        if (!isInServiceArea(lat, lng, serviceAreas)) {
-          onChange(place.formatted_address)
-          onOutOfArea?.(place.formatted_address)
-          return
-        }
+      // Service area validation (circles OR counties, minus excluded states/localities)
+      if (!isAddressAllowed(details, serviceAreas)) {
+        onChange(place.formatted_address)
+        onOutOfArea?.(place.formatted_address)
+        return
       }
 
       onChange(place.formatted_address)

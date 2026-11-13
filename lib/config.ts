@@ -23,6 +23,8 @@ const config = {
 
   // Service areas — JSON array of {id, centerLat, centerLng, radiusMiles}. Must be
   // valid circle objects or "[]". NEVER a state-name array like ["Wisconsin"].
+  // Counties / excluded states / excluded localities are NEXT_PUBLIC_* envs read in
+  // lib/service-area.ts (build-time), see env-schema.json.
   serviceAreas:    process.env.SERVICE_AREAS     ?? "[]",
   // Market name for advertorial copy ("Wisconsin"); empty renders "the areas we serve".
   marketName:      process.env.MARKET_NAME       ?? "",
