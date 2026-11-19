@@ -15,7 +15,8 @@
 import config from "@/lib/config"
 import Image from "next/image"
 import { notFound } from "next/navigation"
-import { ZeroDistractionForm } from "@/components/survey/zero-distraction-form"
+// NEXT_PUBLIC_RECORD_FORM switch (property-record form); off = the zero-distraction form.
+import { ZeroDistractionFormWithRecordForm } from "@/components/survey/zdf-record-switch"
 import { Footer } from "@/components/layout/footer"
 import { TrackingCapture } from "@/components/tracking/tracking-capture"
 
@@ -71,7 +72,8 @@ export default function V3Page() {
           {config.subheadline}
         </p>
 
-        <ZeroDistractionForm
+        <ZeroDistractionFormWithRecordForm
+          companyName={config.companyName}
           accentColor={config.accentColor}
           serviceAreas={parsedServiceAreas}
           disqualifiedPropertyTypes={disqualifiedPropertyTypes}

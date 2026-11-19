@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import { recordStep } from "@/lib/record-check"
 
 // Simple in-memory rate limiter (resets on deploy/restart)
 const submissionLog = new Map<string, { count: number; firstSubmit: number }>()
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const data = await request.json()
+    let data = await request.json()
 
     // Server-side validation
     const phone = (data.phone || "").replace(/\D/g, "").replace(/^1/, "")
@@ -59,11 +60,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: "Address required" }, { status: 400 })
     }
 
+    // Property-record form only (record_check, see lib/record-check.ts): check the house on
+    // public records. Every other post comes back untouched and is forwarded as before.
+    const rec = await recordStep(data)
+    data = rec.data
+
     // Add server IP to payload
     const payload = { ...data, server_ip: ip }
 
     const webhookUrl = process.env.WEBHOOK_URL
-    if (webhookUrl) {
+    if (webhookUrl && !rec.skipWebhook) {
       await fetch(webhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -75,7 +81,7 @@ export async function POST(request: Request) {
     try {
       const GF_CREDENTIAL_ID = process.env.GOFUNNEL_WEBHOOK_CREDENTIAL_ID || "1af312f2-9117-4694-8951-f621a0db0494"
       const GF_BEARER = process.env.GOFUNNEL_WEBHOOK_SECRET || "470d37fe-09fa-4fca-86f4-27d930df629c"
-      if (GF_CREDENTIAL_ID && GF_BEARER) {
+      if (GF_CREDENTIAL_ID && GF_BEARER && !rec.skipGoFunnel) {
         const gfCookie = request.headers.get("cookie") || ""
         const gfMatch = gfCookie.match(/(?:^|; )gf_sid=([^;]*)/)
         const gfSid = (data.gf_sid || (gfMatch ? decodeURIComponent(gfMatch[1]) : "") || "").toString().trim()
@@ -132,7 +138,7 @@ export async function POST(request: Request) {
       }
     } catch {}
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ success: true, ...rec.response })
   } catch {
     return NextResponse.json({ success: false }, { status: 500 })
   }
