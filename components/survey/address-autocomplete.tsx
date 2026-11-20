@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { MapPin } from "lucide-react"
 import { isAddressAllowed, type ServiceArea } from "@/lib/service-area"
+import { trackOutOfArea } from "@/lib/track-out-of-area"
 
 export type { ServiceArea }
 
@@ -145,6 +146,7 @@ export function AddressAutocomplete({
 
       // Service area validation (circles OR counties, minus excluded states/localities)
       if (!isAddressAllowed(details, serviceAreas)) {
+        trackOutOfArea(place.formatted_address, details)
         onChange(place.formatted_address)
         onOutOfArea?.(place.formatted_address)
         return

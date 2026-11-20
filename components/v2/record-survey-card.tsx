@@ -32,6 +32,7 @@ import { Button } from "@/components/ui/button"
 import { captureTrackingData, getIPAddress, readGfSid } from "@/lib/tracking"
 import { Input } from "@/components/ui/input"
 import { AddressAutocomplete, type AddressDetails } from "@/components/survey/address-autocomplete"
+import { trackOutOfArea } from "@/lib/track-out-of-area"
 import type { ServiceArea } from "@/components/survey/address-autocomplete"
 import { readCapturedTracking } from "@/components/tracking/tracking-capture"
 import { leadValue } from "@/lib/lead-score"
@@ -307,6 +308,7 @@ export function RecordSurveyCard({ initialAddress, brand, mode = "two-step", onB
       return
     }
 
+    trackOutOfArea(address, details)
     setAddressVerified(false)
     setOutsideArea(true)
   }

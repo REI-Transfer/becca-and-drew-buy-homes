@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { FacebookPixel } from "@/components/tracking/facebook-pixel"
 import config from "@/lib/config"
 import { GoFunnelTracking } from "@/components/tracking/gofunnel-tracking"
+import { MicrosoftClarity } from "@/components/tracking/microsoft-clarity"
 import "./globals.css"
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] })
@@ -32,6 +33,7 @@ export default function RootLayout({
       <body className={`font-sans antialiased ${plusJakartaSans.className}`}>
         <GoFunnelTracking />
         <FacebookPixel />
+        <MicrosoftClarity />
         {children}
         <Analytics />
       </body>

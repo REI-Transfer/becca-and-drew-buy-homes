@@ -210,6 +210,14 @@
     "description": "Comma list of \"ST:City\" (Google locality, e.g. IL:Chicago) always rejected. Build-time."
   },
   {
+    "name": "NEXT_PUBLIC_CLARITY_ID",
+    "type": "string",
+    "required": false,
+    "scope": "client",
+    "default": "",
+    "description": "Microsoft Clarity project id (session recordings). Empty = off. Build-time."
+  },
+  {
     "name": "NEXT_PUBLIC_SERVICE_AREAS",
     "type": "json",
     "required": false,
